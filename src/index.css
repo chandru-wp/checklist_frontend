@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* Custom Design System using Tailwind CSS */
+
+/* Base Styles */
+* {
+  @apply font-sans;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  @apply min-h-screen antialiased;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  @apply backdrop-blur-xl border border-white/20;
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.glass-dark {
+  @apply backdrop-blur-xl border border-white/10;
+  background: rgba(26, 28, 46, 0.8);
+}
+
+/* Animated Gradient Background */
+.animated-gradient {
+  @apply bg-gradient-to-br from-purple-600 via-pink-500 to-teal-500;
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Premium Button Styles */
+.btn-premium {
+  @apply text-white font-semibold py-3 px-8 rounded-xl border-none cursor-pointer relative overflow-hidden;
+  @apply transition-all duration-300 ease-out;
+  @apply hover:-translate-y-1 hover:shadow-2xl;
+  @apply active:-translate-y-0.5;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.25);
+}
+
+.btn-premium::before {
+  @apply absolute top-0 w-full h-full transition-all duration-500;
+  content: '';
+  left: -100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+}
+
+.btn-premium:hover::before {
+  left: 100%;
+}
+
+.btn-premium:hover {
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.35);
+}
+
+/* Success Button */
+.btn-success {
+  @apply text-white font-semibold py-3.5 px-10 rounded-xl border-none cursor-pointer relative overflow-hidden;
+  @apply transition-all duration-300 ease-out;
+  @apply hover:-translate-y-1;
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  box-shadow: 0 4px 15px rgba(17, 153, 142, 0.35);
+}
+
+.btn-success:hover {
+  box-shadow: 0 8px 25px rgba(17, 153, 142, 0.45);
+}
+
+/* Card Styles */
+.card-premium {
+  @apply bg-white rounded-2xl transition-all duration-300 ease-out;
+  @apply hover:-translate-y-1 hover:shadow-2xl;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.card-premium:hover {
+  box-shadow: 0 20px 50px rgba(102, 126, 234, 0.15);
+}
+
+/* Input Styles */
+.input-premium {
+  @apply bg-white/90 border-2 border-gray-200 rounded-xl py-3.5 px-4 text-base;
+  @apply transition-all duration-300 outline-none;
+  @apply focus:border-purple-500 focus:ring-4 focus:ring-purple-500/20;
+  @apply placeholder:text-gray-400;
+}
+
+/* Navigation Styles */
+.nav-premium {
+  @apply backdrop-blur-xl;
+  background: linear-gradient(135deg, #1a1c2e 0%, #2d3561 100%);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Sidebar Styles */
+.sidebar-premium {
+  @apply shadow-lg;
+  background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  @apply backdrop-blur-md;
+  background: rgba(26, 28, 46, 0.6);
+}
+
+/* Table Styles */
+.table-premium {
+  @apply border-separate;
+  border-spacing: 0;
+}
+
+.table-premium thead tr {
+  @apply bg-gradient-to-r from-slate-50 to-slate-100;
+}
+
+.table-premium th {
+  @apply font-semibold text-slate-800 uppercase text-xs tracking-wide;
+}
+
+.table-premium tbody tr {
+  @apply transition-all duration-200;
+  @apply hover:bg-purple-50/50;
+}
+
+/* Floating Animation */
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse Glow */
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(102, 126, 234, 0.6);
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer {
+  @apply bg-gray-200;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Badge Styles */
+.badge-success {
+  @apply px-3 py-1 rounded-full text-xs font-semibold text-emerald-600;
+  background: linear-gradient(135deg, rgba(17, 153, 142, 0.15) 0%, rgba(56, 239, 125, 0.15) 100%);
+}
+
+.badge-warning {
+  @apply px-3 py-1 rounded-full text-xs font-semibold text-amber-600;
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.15) 100%);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  @apply w-2 h-2;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-100 rounded;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply rounded;
+  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #5a6fd6 0%, #6a4296 100%);
+}
+
+/* Focus Ring */
+*:focus-visible {
+  @apply outline-2 outline-purple-500 outline-offset-2;
+}
+
+/* Selection Color */
+::selection {
+  @apply bg-purple-500/30 text-slate-800;
+}
+
+/* Smooth Transitions */
+a,
+button {
+  @apply transition-all duration-200;
+}
+
+/* Icon Container */
+.icon-container {
+  @apply w-10 h-10 rounded-xl flex items-center justify-center;
+  @apply transition-all duration-300;
+  @apply hover:scale-110;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+}
+
+.icon-container:hover {
+  @apply bg-gradient-to-br from-purple-500 to-pink-500;
+}
+
+.icon-container:hover>* {
+  @apply brightness-0 invert;
+}
