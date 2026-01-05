@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import ChecklistModal from "./ChecklistModal";
 
 export default function AdminDashboard({ user, onLogout }) {
     const [users, setUsers] = useState([]);
@@ -18,6 +19,7 @@ export default function AdminDashboard({ user, onLogout }) {
     const [userChecklists, setUserChecklists] = useState([]);
     const [showTemplateEditor, setShowTemplateEditor] = useState(false);
     const [editingTemplate, setEditingTemplate] = useState(null);
+    const [selectedDetailChecklist, setSelectedDetailChecklist] = useState(null);
     const [newUser, setNewUser] = useState({
         name: "",
         email: "",
@@ -627,22 +629,19 @@ export default function AdminDashboard({ user, onLogout }) {
                                 <p className="text-center text-slate-500 py-8">No checklists assigned to this user.</p>
                             ) : (
                                 userChecklists.map(checklist => (
-                                    <div key={checklist.id} className="bg-slate-700/30 p-4 rounded-xl border border-slate-600/50">
-                                        <div className="flex justify-between items-start mb-4">
-                                            <input
-                                                className="bg-transparent text-white font-bold text-lg outline-none border-b border-transparent focus:border-purple-500 pb-1"
-                                                defaultValue={checklist.title}
-                                                onBlur={(e) => handleUpdateChecklist(checklist.id, e.target.value, checklist.items)}
-                                            />
-                                            <span className="text-[10px] text-slate-500 uppercase">{new Date(checklist.createdAt).toLocaleDateString()}</span>
-                                        </div>
-                                        <div className="space-y-2">
-                                            {checklist.items.map((item, idx) => (
-                                                <div key={idx} className="flex items-center gap-2 text-slate-300 text-sm">
-                                                    <input type="checkbox" checked={item.completed} readOnly className="rounded border-slate-600 bg-slate-800 text-purple-600" />
-                                                    <span>{item.text}</span>
-                                                </div>
-                                            ))}
+                                    <div
+                                        key={checklist.id}
+                                        className="bg-slate-700/30 p-4 rounded-xl border border-slate-600/50 hover:border-purple-500/50 cursor-pointer transition-all group"
+                                        onClick={() => setSelectedDetailChecklist(checklist)}
+                                    >
+                                        <div className="flex justify-between items-start">
+                                            <div>
+                                                <h4 className="text-white font-bold group-hover:text-purple-400 transition-colors">{checklist.title}</h4>
+                                                <span className="text-[10px] text-slate-500 uppercase tracking-widest">{new Date(checklist.createdAt).toLocaleDateString()}</span>
+                                            </div>
+                                            <div className="bg-purple-500/10 text-purple-400 text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider border border-purple-500/20">
+                                                View Details
+                                            </div>
                                         </div>
                                     </div>
                                 ))
@@ -650,6 +649,14 @@ export default function AdminDashboard({ user, onLogout }) {
                         </div>
                     </div>
                 </div>
+            )}
+
+            {/* Detailed Checklist View Modal */}
+            {selectedDetailChecklist && (
+                <ChecklistModal
+                    checklist={selectedDetailChecklist}
+                    onClose={() => setSelectedDetailChecklist(null)}
+                />
             )}
 
             {/* Template Editor Modal */}
