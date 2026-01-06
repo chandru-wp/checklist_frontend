@@ -19,7 +19,11 @@ export default function UserDashboard({ user, onLogout }) {
             });
             setRealChecklists(res.data);
         } catch (err) {
-            console.error("Failed to fetch checklists");
+            console.error("Failed to fetch checklists", err);
+            // If unauthorized, logout the user
+            if (err.response?.status === 401) {
+                onLogout();
+            }
         } finally {
             setIsLoading(false);
         }
@@ -78,15 +82,15 @@ export default function UserDashboard({ user, onLogout }) {
                         {/* User Profile */}
                         <div className="flex items-center gap-4 pl-4 border-l border-white/10">
                             <div className="text-right hidden sm:block">
-                                <p className="text-white text-sm font-medium">{user.name || user.email}</p>
-                                <p className="text-slate-400 text-xs capitalize">{user.role || "User"}</p>
+                                <p className="text-white text-sm font-medium">{user?.name || user?.email || "User"}</p>
+                                <p className="text-slate-400 text-xs capitalize">{user?.role || "User"}</p>
                             </div>
                             <button
                                 onClick={onLogout}
                                 className="w-10 h-10 bg-gradient-to-br from-slate-700 to-slate-800 rounded-xl flex items-center justify-center text-white font-bold border border-white/10 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/20 transition-all"
                                 title="Logout"
                             >
-                                {(user.name || user.email).charAt(0).toUpperCase()}
+                                {(user?.name || user?.email || "U").charAt(0).toUpperCase()}
                             </button>
                         </div>
                     </div>
@@ -135,7 +139,7 @@ export default function UserDashboard({ user, onLogout }) {
                 <main className="flex-1 p-8 max-w-[1600px] mx-auto">
                     {/* Welcome Banner */}
                     <div className="mb-10">
-                        <h2 className="text-3xl font-bold text-white mb-2">Welcome back, {user.name} 👋</h2>
+                        <h2 className="text-3xl font-bold text-white mb-2">Welcome back, {user?.name || "User"} 👋</h2>
                         <p className="text-slate-400">Here's an overview of your active checklists and daily goals.</p>
                     </div>
 

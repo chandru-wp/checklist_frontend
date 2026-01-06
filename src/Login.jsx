@@ -14,6 +14,7 @@ export default function Login({ onLoginSuccess }) {
         confirmPassword: "",
         role: "user"
     });
+    const [successMsg, setSuccessMsg] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -58,15 +59,22 @@ export default function Login({ onLoginSuccess }) {
         setError("");
 
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/register", {
+            await axios.post("http://localhost:5000/api/auth/register", {
                 name: registerData.name,
                 email: registerData.email,
                 password: registerData.password,
                 role: registerData.role
             });
-            localStorage.setItem("token", res.data.token);
-            localStorage.setItem("user", JSON.stringify(res.data.user));
-            onLoginSuccess(res.data.user);
+            setSuccessMsg("Registration successful! Please login with your credentials.");
+            setIsRegisterMode(false);
+            setUsername(registerData.email);
+            setRegisterData({
+                name: "",
+                email: "",
+                password: "",
+                confirmPassword: "",
+                role: "user"
+            });
         } catch (err) {
             setError(err.response?.data?.message || "Registration failed. Please try again.");
         } finally {
@@ -77,11 +85,13 @@ export default function Login({ onLoginSuccess }) {
     const switchToRegister = () => {
         setIsRegisterMode(true);
         setError("");
+        setSuccessMsg("");
     };
 
     const switchToLogin = () => {
         setIsRegisterMode(false);
         setError("");
+        setSuccessMsg("");
     };
 
     return (
@@ -125,6 +135,16 @@ export default function Login({ onLoginSuccess }) {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                             {error}
+                        </div>
+                    )}
+
+                    {/* Success Message */}
+                    {successMsg && (
+                        <div className="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-4 rounded-xl mb-6 text-sm flex items-center gap-3">
+                            <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {successMsg}
                         </div>
                     )}
 
@@ -210,7 +230,7 @@ export default function Login({ onLoginSuccess }) {
                                 Don't have an account?{" "}
                                 <button
                                     onClick={switchToRegister}
-                                    className="text-purple-400 font-medium hover:text-purple-300 transition-colors"
+                                    className="text-purple-400 font-bold hover:text-purple-300 transition-colors underline underline-offset-4"
                                 >
                                     Register Here
                                 </button>

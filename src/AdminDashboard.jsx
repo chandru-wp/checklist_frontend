@@ -224,10 +224,10 @@ export default function AdminDashboard({ user, onLogout }) {
                             {/* Profile Box */}
                             <div className="hidden md:flex items-center gap-4 px-4 py-2 bg-white/5 rounded-2xl border border-white/10 hover:bg-white/10 transition-colors cursor-default">
                                 <div className="w-10 h-10 bg-gradient-to-tr from-amber-500 to-orange-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-orange-500/20">
-                                    {(user.name || user.email).charAt(0).toUpperCase()}
+                                    {(user?.name || user?.email || "A").charAt(0).toUpperCase()}
                                 </div>
                                 <div className="flex flex-col">
-                                    <span className="text-sm font-semibold text-white leading-tight">{user.name || user.email}</span>
+                                    <span className="text-sm font-semibold text-white leading-tight">{user?.name || user?.email || "Admin"}</span>
                                     <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Administrator</span>
                                 </div>
                             </div>
@@ -252,7 +252,7 @@ export default function AdminDashboard({ user, onLogout }) {
                 {/* Page Title */}
                 <div className="mb-8 flex justify-between items-end">
                     <div>
-                        <h2 className="text-3xl font-bold text-white">Welcome back, {user.name} 👋</h2>
+                        <h2 className="text-3xl font-bold text-white">Welcome back, {user?.name || "Admin"} 👋</h2>
                         <p className="text-slate-400 mt-1">Manage system users, templates, and assignments.</p>
                     </div>
                     <div className="flex gap-4">
@@ -396,7 +396,7 @@ export default function AdminDashboard({ user, onLogout }) {
                                                         ? "bg-gradient-to-br from-amber-400 to-orange-500"
                                                         : "bg-gradient-to-br from-blue-400 to-blue-600"
                                                         }`}>
-                                                        {u.name?.charAt(0).toUpperCase() || "?"}
+                                                        {u.name?.charAt(0)?.toUpperCase() || "?"}
                                                     </div>
                                                     {editingDetailsUser === u.id ? (
                                                         <input
