@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "./api";
 
 export default function ChecklistModal({ checklist, onClose, onSubmitSuccess }) {
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
@@ -51,8 +51,8 @@ export default function ChecklistModal({ checklist, onClose, onSubmitSuccess }) 
     const handleSubmit = async () => {
         setIsSubmitting(true);
         try {
-            await axios.post(
-                "http://localhost:5000/api/checklists",
+            await api.post(
+                "/api/checklists",
                 {
                     checklistId: checklist.id,
                     title: checklist.title,
@@ -62,8 +62,7 @@ export default function ChecklistModal({ checklist, onClose, onSubmitSuccess }) 
                         response: responses[item.field],
                         comment: responses.comments[item.field] || ""
                     }))
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
+                }
             );
             alert("Checklist submitted successfully!");
             onSubmitSuccess?.();

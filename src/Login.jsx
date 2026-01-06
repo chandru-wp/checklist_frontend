@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "./api";
 
 export default function Login({ onLoginSuccess }) {
     const [username, setUsername] = useState("");
@@ -28,7 +28,7 @@ export default function Login({ onLoginSuccess }) {
         setError("");
 
         try {
-            const res = await axios.post("http://localhost:5000/api/auth/login", {
+            const res = await api.post("/api/auth/login", {
                 email: username,
                 password,
             });
@@ -59,7 +59,7 @@ export default function Login({ onLoginSuccess }) {
         setError("");
 
         try {
-            await axios.post("http://localhost:5000/api/auth/register", {
+            await api.post("/api/auth/register", {
                 name: registerData.name,
                 email: registerData.email,
                 password: registerData.password,

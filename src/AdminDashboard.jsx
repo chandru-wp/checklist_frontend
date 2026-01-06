@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import ChecklistModal from "./ChecklistModal";
 
 export default function AdminDashboard({ user, onLogout }) {
@@ -27,19 +27,14 @@ export default function AdminDashboard({ user, onLogout }) {
         role: "user"
     });
 
-    const API_URL = "http://localhost:5000/api/auth";
-
-    const getAuthHeaders = () => ({
-        headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-    });
+    // Use centralized api instance
+    const API_URL = "/api/auth";
 
     // Fetch all users
     const fetchUsers = async () => {
         setIsLoading(true);
         try {
-            const res = await axios.get(`${API_URL}/users`, getAuthHeaders());
+            const res = await api.get(`${API_URL}/users`);
             setUsers(res.data);
             setError("");
         } catch (err) {
@@ -55,7 +50,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const fetchTemplates = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/templates`, getAuthHeaders());
+            const res = await api.get(`/api/templates`);
             setTemplates(res.data);
         } catch (err) {
             const msg = err.response?.data?.message || "Failed to fetch templates";
@@ -74,7 +69,7 @@ export default function AdminDashboard({ user, onLogout }) {
     // Update user role
     const handleUpdateRole = async (userId, newRole) => {
         try {
-            await axios.put(`${API_URL}/users/${userId}/role`, { role: newRole }, getAuthHeaders());
+            await api.put(`${API_URL}/users/${userId}/role`, { role: newRole });
             setSuccessMessage("Role updated successfully");
             fetchUsers();
             setTimeout(() => setSuccessMessage(""), 3000);
@@ -86,7 +81,7 @@ export default function AdminDashboard({ user, onLogout }) {
     // Update user name and email
     const handleUpdateUserDetails = async (userId) => {
         try {
-            await axios.put(`${API_URL}/users/${userId}`, editingData, getAuthHeaders());
+            await api.put(`${API_URL}/users/${userId}`, editingData);
             setSuccessMessage("User details updated successfully");
             setEditingDetailsUser(null);
             fetchUsers();
@@ -104,7 +99,7 @@ export default function AdminDashboard({ user, onLogout }) {
         }
 
         try {
-            await axios.put(`${API_URL}/users/${userId}/password`, { password: newPassword }, getAuthHeaders());
+            await api.put(`${API_URL}/users/${userId}/password`, { password: newPassword });
             setSuccessMessage("Password updated successfully");
             setEditingUser(null);
             setNewPassword("");
@@ -119,7 +114,7 @@ export default function AdminDashboard({ user, onLogout }) {
         if (!window.confirm("Are you sure you want to delete this user?")) return;
 
         try {
-            await axios.delete(`${API_URL}/users/${userId}`, getAuthHeaders());
+            await api.delete(`${API_URL}/users/${userId}`);
             setSuccessMessage("User deleted successfully");
             fetchUsers();
             setTimeout(() => setSuccessMessage(""), 3000);
@@ -138,7 +133,7 @@ export default function AdminDashboard({ user, onLogout }) {
         }
 
         try {
-            await axios.post(`${API_URL}/register`, newUser, getAuthHeaders());
+            await api.post(`${API_URL}/register`, newUser);
             setSuccessMessage("User added successfully");
             setShowAddUser(false);
             setNewUser({ name: "", email: "", password: "", role: "user" });
@@ -152,7 +147,7 @@ export default function AdminDashboard({ user, onLogout }) {
     const handleAssignTemplate = async (userId, templateId) => {
         if (!templateId) return;
         try {
-            await axios.post(`http://localhost:5000/api/templates/assign`, { userId, templateId }, getAuthHeaders());
+            await api.post(`/api/templates/assign`, { userId, templateId });
             setSuccessMessage("Template assigned successfully");
             setTimeout(() => setSuccessMessage(""), 3000);
         } catch (err) {
@@ -162,7 +157,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const fetchUserChecklists = async (userId) => {
         try {
-            const res = await axios.get(`${API_URL}/users/${userId}/checklists`, getAuthHeaders());
+            const res = await api.get(`${API_URL}/users/${userId}/checklists`);
             setUserChecklists(res.data);
             setViewingChecklistsUserId(userId);
         } catch (err) {
@@ -172,7 +167,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const handleUpdateChecklist = async (checklistId, title, items) => {
         try {
-            await axios.put(`${API_URL}/checklists/${checklistId}`, { title, items }, getAuthHeaders());
+            await api.put(`${API_URL}/checklists/${checklistId}`, { title, items });
             setSuccessMessage("Checklist updated successfully");
             fetchUserChecklists(viewingChecklistsUserId);
             setTimeout(() => setSuccessMessage(""), 3000);
@@ -183,7 +178,7 @@ export default function AdminDashboard({ user, onLogout }) {
 
     const handleCreateTemplate = async (title, items) => {
         try {
-            await axios.post(`http://localhost:5000/api/templates`, { title, items }, getAuthHeaders());
+            await api.post(`/api/templates`, { title, items });
             setSuccessMessage("Template created successfully");
             fetchTemplates();
             setShowTemplateEditor(false);

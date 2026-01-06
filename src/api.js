@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.MODE === 'production'
-    ? 'https://checklist-backend-XXXX.onrender.com' // USER: Replace with your Render URL
-    : 'http://localhost:5000';
+const API_BASE_URL = 'https://checklist-backend-098h.onrender.com';
 
 const api = axios.create({
     baseURL: API_BASE_URL,

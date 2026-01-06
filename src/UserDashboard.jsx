@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "./api";
 import AssignedChecklists from "./AssignedChecklists";
 import ChecklistModal from "./ChecklistModal";
 import CreateChecklistModal from "./CreateChecklistModal";
@@ -13,10 +13,7 @@ export default function UserDashboard({ user, onLogout }) {
     const fetchChecklists = async () => {
         setIsLoading(true);
         try {
-            const token = localStorage.getItem("token");
-            const res = await axios.get("http://localhost:5000/api/checklists", {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const res = await api.get("/api/checklists");
             setRealChecklists(res.data);
         } catch (err) {
             console.error("Failed to fetch checklists", err);

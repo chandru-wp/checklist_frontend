@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "./api";
 
 export default function CreateChecklistModal({ onClose, onSuccess }) {
     const [title, setTitle] = useState("");
@@ -11,9 +11,8 @@ export default function CreateChecklistModal({ onClose, onSuccess }) {
 
         setIsSubmitting(true);
         try {
-            const token = localStorage.getItem("token");
-            await axios.post(
-                "http://localhost:5000/api/checklists",
+            await api.post(
+                "/api/checklists",
                 {
                     title: title,
                     items: [
@@ -21,8 +20,7 @@ export default function CreateChecklistModal({ onClose, onSuccess }) {
                         { text: "Clock in", completed: false },
                         { text: "Clock out", completed: false }
                     ]
-                },
-                { headers: { Authorization: `Bearer ${token}` } }
+                }
             );
             onSuccess();
             onClose();
