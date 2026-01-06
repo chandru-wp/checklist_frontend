@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://chandru-wp.github.io/checklist_frontend/",
+  "homepage": "https://check-ls.chandrukannan.me/",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
